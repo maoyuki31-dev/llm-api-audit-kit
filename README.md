@@ -1,8 +1,8 @@
-# 海外大模型接入测试与质量治理
+# LLM API Audit Kit
 
-**LLM API Quality Assurance** · 毛友琦
+**大模型 API 评测与计费审计** · 毛友琦
 
-An open framework for evaluating third-party LLM APIs through vendor comparison, behavioral fingerprints, token billing audits, and ongoing quality monitoring.
+LLM API evaluation, model fingerprinting, and token billing audits—with anonymized real-world results.
 
 面向 AI 算力采购、第三方模型 API 接入与供应商管理，覆盖 **接入前评测 → 接入后复测 → 长期质量治理**。
 
