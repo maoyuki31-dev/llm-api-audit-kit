@@ -28,7 +28,7 @@ A practical evaluation framework for AI procurement, third-party LLM API onboard
 | Path | Contents |
 | --- | --- |
 | [docs/](docs/testing-plan.md) | Overall plan, four detailed protocols, references, and known limitations |
-| [examples/](examples/README.md) | Six original script attachments and a scoring example extracted from the documentation |
+| [examples/](examples/README.md) | Maintained reference scripts, original behavioral attachments, and offline tests |
 | [data/probability/](data/probability/README.md) | 743 original prompts and two example ground-truth whitelist entries |
 | [case-studies/](case-studies/anonymized-evaluation/README.md) | Anonymized internal evaluation results and review records |
 | [templates/](templates/test-report.md) | Blank report and billing record templates |
@@ -45,9 +45,20 @@ The framework has been used in an internal enterprise evaluation of model onboar
 - **Acceptance progress:** Initial evaluations and reviews are complete. Some configurations remain conditionally accepted or await end-to-end validation; consult the final review records for their scope.
 - **Ongoing work:** Repeated probability sampling, consistent tool testing across configurations, threshold calibration, and resolution of accounting anomalies.
 
-**Public code scope:** The repository includes reference scripts and original attachments. Some API integrations, answer whitelists, and scoring logic still require completion or adaptation. See the [code notes](examples/README.md) for implementation status and the case study for the internal execution records.
+**Public code scope:** The reference scoring and collection flows now include bug fixes, an explicitly configured Chat Completions adapter, and offline regression tests. Collection and scoring share an 11-question subset. Full answer whitelists, the remaining rubrics, and the original behavioral scripts still require completion or adaptation; the updated adapter has not been tested against live services. See the [code notes](examples/README.md) for implementation status and the case study for the internal execution records.
 
 Interpret results alongside the [known limitations](docs/limitations.md). Fingerprints, capability scores, and token-count differences are signals for further investigation; they do not independently prove model identity or improper billing. See the [source inventory](docs/references.md) for included materials.
+
+## Run the reference examples
+
+Python 3.10+ is recommended. The updated vendor/probability flows and offline tests use only the standard library.
+
+```bash
+python -m unittest discover -s tests -v
+python examples/scoring_pipeline.py --demo
+```
+
+The demo is explicitly labeled and uses simulated inputs. For real collection, configure `LLM_API_URL`, `LLM_API_KEY`, and `LLM_MODEL`; configure the equivalent `JUDGE_` variables for the judge, then follow the [run instructions](examples/README.md). Real API commands can incur costs. Missing rubrics, GT, or dimensions are not replaced with fabricated results. Probability scoring now uses normalized whole-answer matching and Wilson intervals; rebuild baselines before comparing with earlier scores.
 
 ## Anonymized case study
 

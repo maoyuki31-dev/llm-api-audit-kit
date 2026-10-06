@@ -1,37 +1,84 @@
-# 参考代码说明
+# 参考代码与运行说明
 
-此目录保存原方案中的代码，便于读者了解实现思路。脚本没有在本次发布过程中运行，也没有连接真实模型完成测评。
+本目录基于原方案附件维护参考实现。2026-10-06 修复了评分、空集合和采集对齐问题，并新增离线回归测试；旧版附件可从 Git 历史查看。内部历史测试见[匿名化案例](../case-studies/anonymized-evaluation/README.md)，不因本次代码修复改写历史分数。
 
-## 文件对应关系
+## 当前实现
 
-| 文件 | 用途 | 当前状态 |
-| --- | --- | --- |
-| [scoring_pipeline.py](scoring_pipeline.py) | 多厂商评分、汇总与演示 | 从正文提取；11 题 registry、8 题模拟数据；裁判固定返回 2 分 |
-| [multi_vendor_infer.py](source/multi_vendor_infer.py) | 采集第三方 API 回答 | 原附件；8 道简化题，需配置供应商和 API |
-| [behavior_infer.py](source/behavior_infer.py) | 21 条行为探针采样 | 原附件；默认本地 vLLM 示例地址 |
-| [behavior_score.py](source/behavior_score.py) | Rubric 评分与复核清单 | 原附件；旧 SDK 调用形式、空答案占位，需要适配 |
-| [label_candidates.py](source/label_candidates.py) | 743 条提示词标签预筛 | 原附件；输出默认 knowledge，候选需人工确认 |
-| [probability_infer.py](source/probability_infer.py) | 概率方案推理模板 | 原附件；`infer_one()` 返回空字符串，接口未实现 |
-| [probability_score.py](source/probability_score.py) | 知识子集字符串匹配评分 | 原附件；存在统计和空集合处理问题，见下文 |
+| 文件 | 用途与状态 |
+| --- | --- |
+| [scoring_pipeline.py](scoring_pipeline.py) | 11 题参考子集；修复禁止项、负数、复合单位；严格 JSON；真实数据必须显式输入与配置裁判 |
+| [multi_vendor_infer.py](source/multi_vendor_infer.py) | 直接读取同一份 11 题 registry 的完整提示词；保存失败请求，评分入口拒绝未处理的失败记录 |
+| [api_client.py](source/api_client.py) | 标准库 HTTP 客户端；显式环境变量配置、超时、状态与响应检查；缺失 usage 保持 null |
+| [probability_infer.py](source/probability_infer.py) | 实际 Chat Completions 接口适配；先校验全部标签与 GT，再发起请求；创建输出目录 |
+| [probability_score.py](source/probability_score.py) | 规范化完整答案匹配、Wilson 区间、空数据和全对处理；保存复核清单 |
+| [behavior_infer.py](source/behavior_infer.py) | 原始行为采样附件，仍需适配部署环境 |
+| [behavior_score.py](source/behavior_score.py) | 原始行为评分附件，旧 SDK 与人工答案输入仍需适配 |
+| [label_candidates.py](source/label_candidates.py) | 标签预筛附件；默认 knowledge，分类必须人工确认 |
 
-## 阅读与接入顺序
+## 环境与离线验证
 
-1. 先读对应方案并固定完整题库与答案。多厂商采集脚本中的简化题与评分登记并不完全一致，不能直接拼接作为完整评测。
-2. 对接模型时使用个人运行环境保存凭据，不把真实 Key 写回仓库。现有配置值均为占位或本地示例地址。
-3. 明确依赖版本。原附件分别使用 `requests`、`openai`、`scipy`；行为采集与评分采用不同年代的 SDK 调用形式，当前没有经过验证的统一依赖锁文件。
-4. 概率流程还需要生成并人工确认 `label_map.json`，补齐全部 knowledge 样本 GT，并创建输出目录。原脚本按当前工作目录读取文件，移动脚本后应显式修改输入输出路径。
-5. 正式采集前先修复下列问题，并为版本变更重新建立基线。
+修复后的多厂商、概率流程和测试仅依赖 Python 标准库，建议 Python 3.10+。原始行为附件另依赖 `openai`，采集和评分仍使用不同年代的 SDK 接口，未纳入统一运行环境。
 
-## 已知实现问题
+以下命令均从仓库根目录执行：
 
-- 评分示例中的 `stub_llm()` 无论答案内容如何都返回 2 分；默认输出仅演示报表结构。
-- `judge_numeric()` / `judge_pattern()` 将“禁止项未出现”当作违规，禁止项判断方向需要修正；本版保留原代码以便追溯。
-- 自由文本数字匹配不绑定语义字段，负数、复合单位和同一数字复用可能误判；JSON 提取允许额外文本，并非严格 JSON-only 验收。
-- 缺失维度被计为 0，未知题号被跳过。不能用不完整 registry 的总分代表完整 60 题表现。
-- 原评分示例用原始 Token 总量做相对排名，与计费专项方案要求的统一计数、质量约束和实际账单核对并不等价。
-- 概率打分使用子串匹配，可能把嵌在错误单词或否定句中的 GT 计为正确；GT 示例覆盖面不足。
-- 概率脚本用 `binom.ppf` 在样本比例下构造区间，不是可靠的比例参数置信区间实现，尤其在全对/全错时会退化；正式使用应选择合适的比例区间并审查配对比较方法。
-- 概率脚本对空评测集合或空 bad-case 集合使用 `[0]`，可能报错；推理模板未自动创建 `output/`。
-- 行为打分把所有整数分数 0/1/2/3 都列为 bad case，实际上会要求所有数值评分复核；聚合主要是原始分数求和，并未实现文档所说的完整归一化画像。
+```bash
+python -m unittest discover -s tests -v
+python examples/scoring_pipeline.py --demo
+```
 
-这些内容是发布前的静态阅读记录；本次没有运行测试，也没有得到真实模型评测结果。更完整的方法口径见 [已知限制](../docs/limitations.md)。
+`--demo` 使用模拟输入和固定裁判，输出明确标注 DEMO。无参数、空输入、未知题号和重复样本不会自动变成演示或被静默跳过。测试使用模拟响应，不访问网络、不消耗 API 额度。
+
+## 多厂商采集与评分
+
+先在本机设置环境变量（不要将密钥提交到仓库）：
+
+| 环境变量 | 含义 |
+| --- | --- |
+| `LLM_API_URL` | 被测服务完整 Chat Completions URL，包括 `/chat/completions` 路径 |
+| `LLM_API_KEY` | 被测服务密钥 |
+| `LLM_MODEL` | 被测模型标识 |
+| `LLM_TIMEOUT` | 可选，超时秒数，默认 60 |
+| `JUDGE_API_URL` / `JUDGE_API_KEY` / `JUDGE_MODEL` | 独立裁判服务配置 |
+| `JUDGE_TIMEOUT` | 可选，裁判超时秒数，默认 60 |
+
+```bash
+python examples/source/multi_vendor_infer.py --vendor provider-A --rounds 3 --output output/provider-A.jsonl
+python examples/scoring_pipeline.py --input output/provider-A.jsonl --judge-api
+```
+
+以上两条命令会调用你配置的服务并可能产生费用。每条独立请求，参数为 `temperature=0`、`max_tokens=2048`；不自动重试。接口需要支持 Chat Completions 的文本响应格式和这些参数，其他接口须先适配。跨供应商比较前，将各自 JSONL 合并，确保题目和轮次一致；结果只能代表本次参考子集。
+
+全部采集题目直接来自 `REGISTRY`，当前为 11 题，**没有声称补齐原文 60 题的全部评分量规**。默认不加入会与 JSON-only 等题目冲突的统一输出模板。真实开放式评分通过 `--judge-api` 显式启用，也可以在 Python 中向 `main(samples, judge_model=callback)` 传入裁判函数。裁判调用失败或回复无法解析时停止，不把裁判错误记为被测模型 0 分。
+
+失败请求会保留位置与通用错误类型，采集进程以错误退出；检查配置后补测，再提供完整成功记录评分。响应正文和密钥不写入错误说明。缺失 Token 用量保留 null；缺失维度、仅单轮稳定性、不可比 Token 覆盖标为 N/A。当前子集不含完整指纹维度，因此不生成完整加权总分或总分排名。
+
+## 概率流程
+
+先人工确认标签映射，补齐每个 knowledge 题目的答案白名单。仓库的两条 GT **仅为格式示例，不能当作 743 题答案**。标签为 `knowledge` 或 `logic_fiction`，题号需对应原始数据。
+
+```bash
+python examples/source/probability_infer.py --labels private/label_map.json --gt private/gt_whitelist.json --output output/raw_infer_result.json
+python examples/source/probability_score.py --input output/raw_infer_result.json --output-dir output/probability
+```
+
+推理命令使用 `LLM_` 环境变量并产生真实调用；评分命令只读本地结果。GT 缺失或为空会在推理前报错，不用不完整白名单自动计分。支持 token logprobs 的服务可增加 `--logprobs`；只读取服务实际返回的首 Token，没有返回时保留 null，不拿首字符或首单词代替。此适配器未实现主方案的多轮概率分布采样。
+
+### 新评分口径
+
+- knowledge 采用 Unicode NFKC、大小写和空白规范化后的**完整答案匹配**。`pineapple` 不匹配 `apple`，否定句不匹配其中的地名。
+- 完整答案匹配是保守的自动指标。带解释、标点或其他未登记写法即使语义正确，也会进入 `bad_case.csv` 待人工复核；不得把自动 0 分直接当作语义错误。补充等价答案须保留 GT 版本。
+- `logic_fiction` 均进入人工复核；拒答关键词统计仅为描述性计数，不能作为逻辑题正确率。
+- 调用失败保留在总记录数及 `failed_requests` 中，不进入知识答案准确率分母；比较时同时报告失败数量，不能只比较成功请求的分数。
+- 无知识样本时准确率和区间为 null；空评测或全对时正常写出 CSV 表头。
+- 95% 区间使用 Wilson 方法。该区间假设独立伯努利试验；同题重复采样、配对比较或相关题目不能直接据此判显著差异。
+- 匹配方式、提示词和参数已变更，需重新建立基线；不可与旧版子串打分或内部历史分数直接等同比较。
+
+## 尚需完善
+
+- 全部 60 题的评分量规、743 题人工标签与完整 GT。
+- 原始行为评分的 SDK、复核策略和归一化。该附件仍会把 0/1/2/3 的数值评分全部列入复核。
+- 数字抽取尚未绑定业务语义字段，同一数字可能被多个条件复用；需要结构化答案或人工复核。
+- Token 相对用量指标不能替代质量约束、统一计数与实际账单核对。
+- 真实服务兼容性、完整研究复现及供应商验收。此次只进行了离线回归，没有用真实密钥联调，没有重跑匿名化案例。
+
+详见[已知限制](../docs/limitations.md)。

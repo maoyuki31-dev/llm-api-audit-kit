@@ -14,6 +14,8 @@
 
 未重新分发：原文中的研究论文 PDF、两个独立的行为论文附录文档，以及多厂商文档中 3 个内嵌电子表格。探针和评分摘要可从已收录的行为脚本查看，完整研究资料请使用下方上游来源。内嵌表格未导出；本仓库的报告和 CSV 是依据正文新增的空白模板，不是原表格副本。
 
+代码后续维护说明：多厂商与概率脚本已在原附件基础上修复并新增公共 API 客户端；原始版本保留在 Git 历史，当前状态见[代码说明](../examples/README.md)。
+
 ## 公开研究链接
 
 - **Behavioral Fingerprinting of Large Language Models**： [论文](https://arxiv.org/abs/2509.04504) · [作者项目](https://github.com/JarvisPei/Behavioral-Fingerprinting)。用于理解行为画像、诊断探针及评分流程；本项目的采购适配稿不构成对论文实验的完整复现。

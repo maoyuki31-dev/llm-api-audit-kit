@@ -16,3 +16,4 @@ model_answer_list.json
 behavior_fingerprint_full_result.json
 .DS_Store
 Thumbs.db
+gt_whitelist.json

@@ -28,8 +28,9 @@ LLM API evaluation, model fingerprinting, and token billing audits—with anonym
 | 路径 | 内容 |
 | --- | --- |
 | [docs/](docs/testing-plan.md) | 主方案、4 份专项文档、资料来源和已知限制 |
-| [examples/](examples/README.md) | 6 份原始脚本附件，以及从正文提取的评分参考代码 |
+| [examples/](examples/README.md) | 维护中的参考脚本、原始行为附件及离线回归测试 |
 | [data/probability/](data/probability/README.md) | 743 条原始提示词、2 条 GT 白名单示例 |
+| [case-studies/](case-studies/anonymized-evaluation/README.md) | 匿名化内部实测结果与复核记录 |
 | [templates/](templates/test-report.md) | 空白报告及计费记录模板 |
 | [LICENSES/](LICENSES/Behavioral-Fingerprinting-MIT.txt) | 行为指纹上游项目的版权与许可声明 |
 
@@ -44,9 +45,20 @@ LLM API evaluation, model fingerprinting, and token billing audits—with anonym
 - **验收进展**：已形成首轮验收与复核结论，部分对象仍为条件通过或待端到端验证；具体以案例中的最终复核记录为准。
 - **持续完善**：继续补齐多轮概率采样、统一工具测试、阈值校准及计量异常闭环。
 
-**公开代码范围**：本仓库包含参考脚本及原始附件，部分接口、答案白名单和评分逻辑仍需补齐或适配。内部实测的执行记录见案例目录；公开代码的具体完成度见 [代码说明](examples/README.md)。
+**公开代码范围**：参考评分与采集流程已修复核心问题，增加显式配置的 Chat Completions 接口与离线回归测试，采集和评分共用 11 题子集。完整答案白名单、其他题目量规与原始行为附件仍需补齐或适配；新接口尚未完成真实服务联调。内部实测的执行记录见案例目录；公开代码的具体完成度见 [代码说明](examples/README.md)。
 
 使用时请结合 [已知限制](docs/limitations.md) 解读结果：指纹、能力分数和 Token 计数差异用于触发复核，不能单独作为模型身份或计费违规的证明。原文附件收录范围见 [资料清单](docs/references.md)。
+
+## 运行参考示例
+
+建议 Python 3.10+。修复后的多厂商、概率流程与离线测试仅依赖标准库。
+
+```bash
+python -m unittest discover -s tests -v
+python examples/scoring_pipeline.py --demo
+```
+
+演示使用模拟输入并明确标注。真实采集需要配置 `LLM_API_URL`、`LLM_API_KEY`、`LLM_MODEL`；裁判使用对应的 `JUDGE_` 环境变量，步骤见[运行说明](examples/README.md)。真实 API 命令可能产生费用。缺失答案、量规和维度不会用虚构结果补齐。概率评分改为规范化完整答案匹配与 Wilson 区间，比较旧分数前须重建基线。
 
 ## 匿名化实测案例
 

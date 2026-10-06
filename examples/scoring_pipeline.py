@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import json
+import argparse
 import re
 import statistics
 from dataclasses import dataclass
@@ -102,7 +103,7 @@ class Sample:
     qid: str
     round_idx: int
     answer: str
-    tokens: int = 0
+    tokens: Optional[int] = None
     latency_ms: int = 0
 
 
@@ -116,7 +117,7 @@ class SampleScore:
     score: int
     reason: str
     tag: ErrorTag = ErrorTag.NONE
-    tokens: int = 0
+    tokens: Optional[int] = None
 
 
 @dataclass
@@ -129,15 +130,15 @@ class QuestionResult:
     scores: List[int]
     stability: float
     tag: ErrorTag
-    tokens: int
+    tokens: Optional[int]
 
 
 @dataclass
 class VendorReport:
     """厂商级加权汇总"""
     vendor: str
-    dimensions: Dict[str, float]
-    total: float
+    dimensions: Dict[str, Optional[float]]
+    total: Optional[float]
 
 
 # ============================================================
@@ -167,9 +168,12 @@ def anonymize(text: str, extra_terms: Sequence[str] = ()) -> str:
 # ============================================================
 # 3. 客观题自动判分
 # ============================================================
-SCALE = {"亿": 1e8, "万": 1e4, "千": 1e3, "k": 1e3, "K": 1e3, "M": 1e6}
+SCALE = {"千亿": 1e11, "百亿": 1e10, "十亿": 1e9, "亿": 1e8,
+         "千万": 1e7, "百万": 1e6, "十万": 1e5, "万": 1e4,
+         "千": 1e3, "k": 1e3, "K": 1e3, "M": 1e6}
 ALPHA_UNITS = {"k", "K", "M"}      # 需确认后面不是字母，避免 200kW 被当成 200k
-NUMBER_RE = re.compile(r"(?<![\d.])(\d+(?:\.\d+)?)\s*(亿|万|千|[kKM])?")
+NUMBER_RE = re.compile(r"(?<![\d.])([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)"
+                       r"\s*(千亿|百亿|十亿|千万|百万|十万|亿|万|千|[kKM])?")
 # 先屏蔽型号名（H200 / B300 / A100），避免其中的数字污染数值比对
 MODEL_TOKEN_RE = re.compile(r"\b[A-Za-z]{1,4}[- ]?\d{2,5}\b")
 FENCE_RE = re.compile(r"`{3}(?:json)?\s*(.*?)`{3}", re.S)
@@ -177,7 +181,7 @@ FENCE_RE = re.compile(r"`{3}(?:json)?\s*(.*?)`{3}", re.S)
 
 def extract_numbers(text: str) -> List[float]:
     """从自由文本中抽取数值，支持 万/亿/千/K/M 单位与千分位逗号"""
-    cleaned = MODEL_TOKEN_RE.sub(" ", text.replace(",", "").replace("，", ""))
+    cleaned = MODEL_TOKEN_RE.sub(" ", text.replace(",", "").replace("，", "").replace("−", "-"))
     numbers: List[float] = []
     for match in NUMBER_RE.finditer(cleaned):
         value = float(match.group(1))
@@ -206,7 +210,7 @@ def _missing_patterns(text: str, patterns: Sequence[str]) -> List[str]:
 
 def judge_numeric(answer: str, q: Question) -> Tuple[int, str, ErrorTag]:
     """数值/计算题：全部关键值 + 必含要点命中 = 2；部分命中 = 1；否则 0"""
-    bad = _missing_patterns(answer, q.forbidden)
+    bad = [pattern for pattern in q.forbidden if re.search(pattern, answer)]
     if bad:
         return 0, "出现禁止内容：" + "；".join(bad), ErrorTag.INSTRUCTION_IGNORED
 
@@ -227,14 +231,9 @@ def judge_numeric(answer: str, q: Question) -> Tuple[int, str, ErrorTag]:
 
 
 def _load_json(answer: str) -> Optional[Any]:
-    """优先取代码块，其次取首个 [ ... ] / { ... }"""
-    block = FENCE_RE.search(answer)
-    text = block.group(1) if block else answer
-    picked = re.search(r"[\[{].*[\]}]", text, re.S)
-    if not picked:
-        return None
+    """严格 JSON-only：额外说明、代码围栏均不符合格式约束。"""
     try:
-        return json.loads(picked.group(0))
+        return json.loads(answer.strip())
     except json.JSONDecodeError:
         return None
 
@@ -271,7 +270,7 @@ def judge_json(answer: str, q: Question) -> Tuple[int, str, ErrorTag]:
 
 def judge_pattern(answer: str, q: Question) -> Tuple[int, str, ErrorTag]:
     """格式/保真题：禁止项命中直接 0；必含项全中 = 2，部分 = 1"""
-    bad = _missing_patterns(answer, q.forbidden)
+    bad = [pattern for pattern in q.forbidden if re.search(pattern, answer)]
     if bad:
         return 0, "出现禁止内容（指令未遵循）", ErrorTag.INSTRUCTION_IGNORED
     if not q.must_match:
@@ -300,6 +299,8 @@ SCORE_RE = re.compile(r"(?<!\d)([012])(?!\d)\s*分?")
 def judge_llm(answer: str, q: Question,
               llm: Callable[[str], str]) -> Tuple[int, str, ErrorTag]:
     """调用裁判模型盲评；同一题所有厂商使用同一评分会话"""
+    if not answer.strip():
+        return 0, "未作答", q.default_tag
     prompt = LLM_RUBRIC_TEMPLATE.format(
         prompt=q.prompt,
         answer_key=q.answer_key or "（见评分细则）",
@@ -309,7 +310,7 @@ def judge_llm(answer: str, q: Question,
     reply = (llm(prompt) or "").strip()
     matched = SCORE_RE.search(reply)
     if not matched:
-        return 0, "评分模型输出无法解析：" + reply[:60], ErrorTag.FORMAT_VIOLATION
+        raise ValueError("评分模型输出无法解析；需要复核，不能当作被测模型得 0 分")
     score = int(matched.group(1))
     tag = ErrorTag.NONE if score > 0 else q.default_tag
     return score, reply[:120], tag
@@ -364,24 +365,31 @@ def aggregate(sample_scores: Sequence[SampleScore]) -> List[QuestionResult]:
             scores=scores,
             stability=round(stability_of(scores), 4),
             tag=statistics.mode(tags) if tags else ErrorTag.NONE,
-            tokens=sum(i.tokens for i in items),
+            tokens=sum(i.tokens for i in items) if all(i.tokens is not None for i in items) else None,
         ))
     return results
 
 
-def dimension_scores(results: Sequence[QuestionResult]) -> Dict[str, float]:
+def dimension_scores(results: Sequence[QuestionResult]) -> Dict[str, Optional[float]]:
     """各维度归一化得分（0–1）：客观+主观统一按 平均分 / 2 处理"""
     buckets: Dict[str, List[float]] = {key: [] for key in DIMENSION_WEIGHTS}
     for item in results:
         dimension = DIMENSION_OF_CATEGORY.get(item.category)
         if dimension:
             buckets[dimension].append(item.avg_score / SCORE_MAX)
-    return {key: (statistics.fmean(values) if values else 0.0)
+    return {key: (statistics.fmean(values) if values else None)
             for key, values in buckets.items()}
 
 
 def token_scores(results: Sequence[QuestionResult]) -> Dict[str, float]:
     """Token 消耗得分：以最低消耗厂商为 1.0，其余按比例折算"""
+    if any(item.tokens is None or item.tokens <= 0 for item in results):
+        return {}
+    coverage = {}
+    for item in results:
+        coverage.setdefault(item.vendor, set()).add((item.qid, len(item.scores)))
+    if len({frozenset(value) for value in coverage.values()}) > 1:
+        return {}
     totals: Dict[str, int] = {}
     for item in results:
         totals[item.vendor] = totals.get(item.vendor, 0) + item.tokens
@@ -402,11 +410,11 @@ def build_reports(results: Sequence[QuestionResult]) -> Dict[str, VendorReport]:
     for vendor, items in by_vendor.items():
         dims = dimension_scores(items)
         dims["stability"] = round(statistics.fmean([i.stability for i in items]), 4) \
-            if items else 0.0
-        dims["token"] = round(tokens.get(vendor, 0.0), 4)
-        total = sum(DIMENSION_WEIGHTS[key] * dims.get(key, 0.0)
-                    for key in DIMENSION_WEIGHTS)
-        reports[vendor] = VendorReport(vendor, dims, round(total, 4))
+            if items and all(len(i.scores) >= 2 for i in items) else None
+        dims["token"] = round(tokens[vendor], 4) if vendor in tokens else None
+        total = sum(DIMENSION_WEIGHTS[key] * dims[key] for key in DIMENSION_WEIGHTS) \
+            if all(dims[key] is not None for key in DIMENSION_WEIGHTS) else None
+        reports[vendor] = VendorReport(vendor, dims, round(total, 4) if total is not None else None)
     return reports
 
 
@@ -414,6 +422,8 @@ def diff_conclusion(reports: Dict[str, VendorReport]) -> str:
     """差异结论：≤5% 正常；5%–15% 有差距；>15% 明显弱"""
     if len(reports) < 2:
         return "厂商数量不足 2 个，无法比较"
+    if any(report.total is None for report in reports.values()):
+        return "维度或采样覆盖不完整，未生成跨厂商总分比较"
     totals = [r.total for r in reports.values()]
     best, worst = max(totals), min(totals)
     if best <= 0:
@@ -451,10 +461,12 @@ def to_report_markdown(reports: Dict[str, VendorReport]) -> str:
         "| 厂商 | " + " | ".join(DIMENSION_LABELS[k] for k in keys) + " | 加权总分 |",
         "| --- | " + " | ".join("---" for _ in keys) + " | --- |",
     ]
-    for vendor in sorted(reports, key=lambda v: -reports[v].total):
+    def format_score(value):
+        return "N/A" if value is None else f"{value * 100:.1f}"
+    for vendor in sorted(reports):
         report = reports[vendor]
-        cells = " | ".join(f"{report.dimensions.get(k, 0.0) * 100:.1f}" for k in keys)
-        lines.append(f"| {vendor} | {cells} | {report.total * 100:.1f} |")
+        cells = " | ".join(format_score(report.dimensions.get(k)) for k in keys)
+        lines.append(f"| {vendor} | {cells} | {format_score(report.total)} |")
     return "\n".join(lines)
 
 
@@ -594,11 +606,15 @@ REGISTRY: Dict[str, Question] = {
 def load_samples(path: str) -> List[Sample]:
     """从 JSONL 读取采集结果，每行字段：vendor/qid/round_idx/answer/tokens/latency_ms"""
     samples: List[Sample] = []
-    with open(path, "r", encoding="utf-8") as handle:
-        for line in handle:
+    with open(path, "r", encoding="utf-8-sig") as handle:
+        for number, line in enumerate(handle, 1):
             line = line.strip()
             if line:
-                samples.append(Sample(**json.loads(line)))
+                record = json.loads(line)
+                if record.get("status", "ok") != "ok":
+                    raise ValueError(f"第 {number} 行调用失败，请复核并补测后评分")
+                record.pop("status", None)
+                samples.append(Sample(**record))
     return samples
 
 
@@ -637,16 +653,41 @@ def build_demo_samples(vendors: Sequence[str] = ("云厂A", "云厂B", "云厂C"
     return samples
 
 
-def main(samples: Optional[Sequence[Sample]] = None) -> None:
-    """完整流程：采集 → 脱敏 → 判分 → 汇总 → 输出"""
-    data = list(samples) if samples else build_demo_samples()
-    judge_model: Callable[[str], str] = stub_llm      # ← 替换为真实裁判模型调用
-
-    sample_scores = [score_sample(s, REGISTRY[s.qid], judge_model)
-                     for s in data if s.qid in REGISTRY]
+def main(samples: Optional[Sequence[Sample]] = None,
+         judge_model: Optional[Callable[[str], str]] = None, *, demo: bool = False) -> None:
+    """真实数据必须显式传入；模拟数据和占位裁判仅供 --demo。"""
+    if demo:
+        if samples is not None or judge_model is not None:
+            raise ValueError("演示模式不能混入真实输入或裁判")
+        data, judge_model = build_demo_samples(), stub_llm
+    else:
+        data = list(samples) if samples is not None else []
+        if not data:
+            raise ValueError("没有输入样本；演示请显式使用 --demo")
+        if judge_model is stub_llm:
+            raise ValueError("真实评分禁止使用占位裁判")
+    unknown = sorted({s.qid for s in data} - REGISTRY.keys())
+    if unknown:
+        raise ValueError("未登记题号，已停止评分：" + ", ".join(unknown))
+    seen = set()
+    for sample in data:
+        key = (sample.vendor, sample.qid, sample.round_idx)
+        if key in seen or type(sample.round_idx) is not int or sample.round_idx < 1:
+            raise ValueError("重复样本或无效轮次")
+        if not isinstance(sample.answer, str):
+            raise ValueError("答案必须为文本")
+        if sample.tokens is not None and (type(sample.tokens) is not int or sample.tokens < 0):
+            raise ValueError("tokens 必须为非负整数或 null")
+        seen.add(key)
+    if any(REGISTRY[s.qid].kind is JudgeKind.LLM for s in data) and judge_model is None:
+        raise ValueError("存在开放式题；请显式配置真实裁判模型回调")
+    sample_scores = [score_sample(s, REGISTRY[s.qid], judge_model) for s in data]
     results = aggregate(sample_scores)
     reports = build_reports(results)
 
+    if demo:
+        print("> DEMO：模拟输入与固定裁判，仅演示报表，不能作为评测结果。\n")
+    print("> 当前为 11 题参考子集；缺失维度标为 N/A，不输出完整 60 题验收结论。\n")
     print("### 1. 每题得分明细（含轮次与错误归因）\n")
     print(to_markdown_table(results))
     print("\n### 2. 加权总分（综合/异常/指纹/稳定/Token）\n")
@@ -656,5 +697,20 @@ def main(samples: Optional[Sequence[Sample]] = None) -> None:
 
 
 if __name__ == "__main__":
-    main()
-    # 真实使用：main(load_samples("collected_answers.jsonl"))
+    parser = argparse.ArgumentParser(description="参考子集评分；默认不调用模型")
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--demo", action="store_true")
+    mode.add_argument("--input", help="采集结果 JSONL")
+    parser.add_argument("--judge-api", action="store_true", help="使用 JUDGE_ 环境变量配置的裁判")
+    args = parser.parse_args()
+    if args.demo:
+        if args.judge_api:
+            parser.error("--demo 不能与 --judge-api 同用")
+        main(demo=True)
+    else:
+        callback = None
+        if args.judge_api:
+            from source.api_client import ChatClient
+            client = ChatClient.from_env("JUDGE_")
+            callback = lambda prompt: client.complete(prompt)["content"]
+        main(load_samples(args.input), callback)

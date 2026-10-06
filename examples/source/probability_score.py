@@ -1,107 +1,111 @@
+"""Conservative whole-answer scoring with Wilson intervals (standard library only)."""
+import argparse
 import csv
 import json
-from scipy.stats import binom
-
-def normalize(s: str) -> str:
-    return s.lower().strip()
-
-def score_sample(model_output: str, gt_list: list[str]) -> int:
-    out_norm = normalize(model_output)
-    for gt in gt_list:
-        gt_norm = normalize(gt)
-        if gt_norm in out_norm:
-            return 1
-    return 0
+import math
+from pathlib import Path
+import unicodedata
 
 
-def calc_95_ci(success: int, total: int):
-    """二项分布95%置信区间"""
-    if total <= 0:
-        return (0.0, 0.0)
-    alpha = 0.05
-    lower = binom.ppf(alpha/2, n=total, p=success/total) / total
-    upper = binom.ppf(1-alpha/2, n=total, p=success/total) / total
-    return (round(lower*100,2), round(upper*100,2))
+def normalize(text):
+    return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
 
 
-def do_eval(infer_result_path: str, out_csv: str, bad_case_csv: str):
-    with open(infer_result_path, "r", encoding="utf-8") as f:
-        infer_data = json.load(f)
+def score_sample(model_output, gt_list):
+    """Exact normalized answer only; explanations/nonmatches need human review."""
+    if not isinstance(model_output, str):
+        raise ValueError("model_output must be text")
+    if not isinstance(gt_list, list) or not gt_list or any(
+            not isinstance(gt, str) or not normalize(gt) for gt in gt_list):
+        raise ValueError("A nonempty, reviewed GT whitelist is required")
+    return int(normalize(model_output) in {normalize(gt) for gt in gt_list})
 
-    knowledge_total = 0
-    knowledge_correct = 0
-    logic_fiction_total = 0
-    logic_fiction_reject = 0
-    csv_rows = []
-    bad_case_rows = []
 
-    for rec in infer_data:
-        pid = rec["prompt_id"]
-        prompt = rec["prompt"]
-        label = rec["label"]
-        full_out = rec["full_output"]
-        gt = rec["gt_whitelist"]
+def calc_95_ci(success, total):
+    """Wilson score interval for independent Bernoulli trials; percentages."""
+    if type(success) is not int or type(total) is not int or not 0 <= success <= total:
+        raise ValueError("Require integers with 0 <= success <= total")
+    if total == 0:
+        return (None, None)
+    z = 1.959963984540054
+    p = success / total
+    denominator = 1 + z * z / total
+    center = (p + z * z / (2 * total)) / denominator
+    margin = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total)) / denominator
+    return (round(max(0, center - margin) * 100, 2),
+            round(min(1, center + margin) * 100, 2))
 
-        score = None
-        if label == "knowledge":
-            knowledge_total +=1
-            score = score_sample(full_out, gt)
-            if score == 1:
-                knowledge_correct +=1
-            else:
-                bad_case_rows.append({"prompt_id":pid,"prompt":prompt,"output":full_out,"gt":gt})
-        elif label == "logic_fiction":
-            logic_fiction_total +=1
-            # 简单统计拒绝
-            rej_words = ["i don't know","sorry","cannot answer"]
-            if any(r in full_out.lower() for r in rej_words):
-                logic_fiction_reject +=1
 
-        csv_rows.append({
-            "prompt_id":pid,
-            "prompt":prompt,
-            "label":label,
-            "score":score,
-            "full_output":full_out
-        })
+def validate_record(record):
+    if not isinstance(record, dict) or not {"prompt_id", "prompt", "label", "full_output"} <= record.keys():
+        raise ValueError("Record missing required fields")
+    if not isinstance(record["prompt"], str) or not record["prompt"].strip():
+        raise ValueError("Prompt must be nonempty text")
+    if not isinstance(record["full_output"], str):
+        raise ValueError("full_output must be text")
+    if record["label"] not in {"knowledge", "logic_fiction"}:
+        raise ValueError("Label must be knowledge or logic_fiction")
+    if record.get("status", "ok") not in {"ok", "error"}:
+        raise ValueError("Unsupported request status")
+    if record["label"] == "knowledge":
+        score_sample("", record.get("gt_whitelist"))
 
-    # 输出打分csv
-    with open(out_csv, "w", newline="", encoding="utf-8-sig") as fw:
-        writer = csv.DictWriter(fw, fieldnames=csv_rows[0].keys())
+
+def write_csv(path, rows, fields):
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("w", newline="", encoding="utf-8-sig") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
-        writer.writerows(csv_rows)
-    # 输出bad case
-    with open(bad_case_csv, "w", newline="", encoding="utf-8-sig") as fw:
-        writer = csv.DictWriter(fw, fieldnames=bad_case_rows[0].keys())
-        writer.writeheader()
-        writer.writerows(bad_case_rows)
+        writer.writerows(rows)
 
-    # 计算指标
-    acc_baseline = round((knowledge_correct / knowledge_total)*100,2) if knowledge_total>0 else 0.0
-    ci_low, ci_high = calc_95_ci(knowledge_correct, knowledge_total)
 
-    print("===== 评测汇总指标 =====")
-    print(f"总样本：{len(infer_data)}")
-    print(f"knowledge样本总数 N_knowledge：{knowledge_total}")
-    print(f"knowledge答对 Correct：{knowledge_correct}")
-    print(f"Knowledge Accuracy【主基线指标】：{acc_baseline} %")
-    print(f"95%置信区间：[{ci_low} %, {ci_high} %]")
-    print(f"logic_fiction样本总数：{logic_fiction_total}，拒绝数量：{logic_fiction_reject}")
+def do_eval(infer_result_path, out_csv, bad_case_csv):
+    records = json.loads(Path(infer_result_path).read_text(encoding="utf-8-sig"))
+    if not isinstance(records, list):
+        raise ValueError("Input must be a list of inference records")
+    for record in records:
+        validate_record(record)
+    rows, bad_rows = [], []
+    knowledge_total = knowledge_correct = fiction_total = refusal = failures = 0
+    for rec in records:
+        score, reason = None, ""
+        if rec.get("status", "ok") == "error":
+            failures += 1
+            reason = "request_failed_not_scored"
+        elif rec["label"] == "knowledge":
+            knowledge_total += 1
+            score = score_sample(rec["full_output"], rec["gt_whitelist"])
+            knowledge_correct += score
+            reason = "exact_match" if score else "no_exact_match_review_required"
+        else:
+            fiction_total += 1
+            refusal += int(any(word in rec["full_output"].casefold()
+                               for word in ("i don't know", "sorry", "cannot answer")))
+            reason = "logic_fiction_requires_manual_review"
+        row = {key: rec[key] for key in ("prompt_id", "prompt", "label", "full_output")}
+        row.update(score=score, reason=reason)
+        rows.append(row)
+        if score != 1:
+            bad_rows.append(dict(row, gt=json.dumps(rec.get("gt_whitelist", []), ensure_ascii=False)))
+    fields = ["prompt_id", "prompt", "label", "score", "full_output", "reason"]
+    write_csv(out_csv, rows, fields)
+    write_csv(bad_case_csv, bad_rows, fields + ["gt"])
+    low, high = calc_95_ci(knowledge_correct, knowledge_total)
+    metrics = {"total_all": len(records), "failed_requests": failures,
+               "N_knowledge": knowledge_total, "Correct_knowledge": knowledge_correct,
+               "Acc_baseline_pct": round(knowledge_correct / knowledge_total * 100, 2) if knowledge_total else None,
+               "ci_95_low": low, "ci_95_high": high, "ci_method": "wilson",
+               "scoring_method": "normalized_whole_answer_exact_match",
+               "logic_fiction_total": fiction_total, "logic_fiction_reject": refusal}
+    print(json.dumps(metrics, ensure_ascii=False, indent=2))
+    return metrics
 
-    return {
-        "total_all": len(infer_data),
-        "N_knowledge": knowledge_total,
-        "Correct_knowledge": knowledge_correct,
-        "Acc_baseline_pct": acc_baseline,
-        "ci_95_low": ci_low,
-        "ci_95_high": ci_high,
-        "logic_fiction_total": logic_fiction_total,
-        "logic_fiction_reject": logic_fiction_reject
-    }
 
 if __name__ == "__main__":
-    metric = do_eval(
-        infer_result_path="output/raw_infer_result.json",
-        out_csv="output/eval_result.csv",
-        bad_case_csv="output/bad_case.csv"
-    )
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", required=True)
+    parser.add_argument("--output-dir", default="output")
+    args = parser.parse_args()
+    folder = Path(args.output_dir)
+    do_eval(args.input, folder / "eval_result.csv", folder / "bad_case.csv")
