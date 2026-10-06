@@ -42,6 +42,10 @@ An open framework for evaluating third-party LLM APIs through vendor comparison,
 
 执行前请阅读 [代码说明](examples/README.md) 与 [已知限制](docs/limitations.md)。原文附件收录范围见 [资料清单](docs/references.md)。
 
+## 匿名化实测案例
+
+已加入作者按本方案执行的 [匿名化历史测试结果](case-studies/anonymized-evaluation/README.md)：28 个工作表，涵盖 6 个测试对象、逐题指标、验收结果与异常复核。公司、渠道及内部身份信息已处理，原始自由文本按公开范围隐藏。当前参考代码的局限仍然适用，案例不代表本仓库脚本已完成端到端复现。
+
 ## 参与完善
 
 欢迎通过 Issue / Pull Request 补充完整评分量规、修复参考脚本、完善基线与统计方法。变更提示词、GT、参数或评分规则时，请记录版本及对历史基线的影响。案例请使用匿名化样本，避免提交 API Key 或未授权业务数据。

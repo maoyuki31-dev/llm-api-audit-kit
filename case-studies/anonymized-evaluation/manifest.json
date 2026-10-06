@@ -1,0 +1,230 @@
+{
+  "format": "anonymized-values-snapshot",
+  "sheet_count": 28,
+  "sheets": [
+    {
+      "file": "tables/sheet-01.csv",
+      "title": "对象A总览",
+      "rows": 35,
+      "columns": 11,
+      "csv_first_column": "source_row",
+      "sha256": "dee86440cb6e9ee96f46538aff2f37d6b41200ed33e20614deb4470e9db7f710"
+    },
+    {
+      "file": "tables/sheet-02.csv",
+      "title": "对象A行为指纹",
+      "rows": 22,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "eda80643e3934635f3dfc5fd72274c032ad47081feb71e0e9ea9d9b655df254f"
+    },
+    {
+      "file": "tables/sheet-03.csv",
+      "title": "对象A概率指纹",
+      "rows": 744,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "3ccf4a51cbfcaf29b959f6c65c4c601dd31b71d1385b7b291759ac7f488ecdf0"
+    },
+    {
+      "file": "tables/sheet-04.csv",
+      "title": "对象A计费用量",
+      "rows": 30,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "ab9f97e91670a81ea6de2a40ec8077fcb07727d601660f7616cd9712b3b37c8b"
+    },
+    {
+      "file": "tables/sheet-05.csv",
+      "title": "对象A异常记录",
+      "rows": 250,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "9105dd638a419b4281f6c174bb19d213a1e63c638d10ae15ce140a0bd24def8f"
+    },
+    {
+      "file": "tables/sheet-06.csv",
+      "title": "对象A验收交付",
+      "rows": 37,
+      "columns": 11,
+      "csv_first_column": "source_row",
+      "sha256": "92a24f967400d0e29cfc7a0dcb18c2d3b88aea367d4b2b31d116e1e2977e6599"
+    },
+    {
+      "file": "tables/sheet-07.csv",
+      "title": "对象B验收交付",
+      "rows": 66,
+      "columns": 11,
+      "csv_first_column": "source_row",
+      "sha256": "14808e564f8f5a74591e33574ab5c70806dd788dfca46eca857e6dbf4fa7d76b"
+    },
+    {
+      "file": "tables/sheet-08.csv",
+      "title": "对象B行为指纹",
+      "rows": 22,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "f230d1b091c5e7a5bfed52264329390523127bb0a90411fcdfd9cc065747de91"
+    },
+    {
+      "file": "tables/sheet-09.csv",
+      "title": "对象B概率指纹",
+      "rows": 744,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "da99d8ec4c267cb6f412774c1cbb5cf212cb6be862048d4ebff9c6b030d46455"
+    },
+    {
+      "file": "tables/sheet-10.csv",
+      "title": "对象B计费用量",
+      "rows": 30,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "e51c5b492d50e3baf3ca46f1900c0482ad056d5ff207e9b44184029464fd1b3c"
+    },
+    {
+      "file": "tables/sheet-11.csv",
+      "title": "对象B工具调用",
+      "rows": 35,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "cc2efeb119831836182d1bb085f36b4b84918eeb723af4985c47947dde10ddf1"
+    },
+    {
+      "file": "tables/sheet-12.csv",
+      "title": "对象B异常记录",
+      "rows": 133,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "6ee2cf3b973c259e41c2161b207fe65973bd9c6f525f09909a57b929f89cf72b"
+    },
+    {
+      "file": "tables/sheet-13.csv",
+      "title": "对象C及D验收总览",
+      "rows": 39,
+      "columns": 11,
+      "csv_first_column": "source_row",
+      "sha256": "f66ffd5c2d364a636a87b32cc44fb32116db390d7a85a04ff2a8edd74d49d0f3"
+    },
+    {
+      "file": "tables/sheet-14.csv",
+      "title": "对象C及D行为指纹",
+      "rows": 43,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "d38272e7c6dd1dc3752d4813c4a9ba24f6077ef287b8aa986918e44f4bbc4c2e"
+    },
+    {
+      "file": "tables/sheet-15.csv",
+      "title": "对象C及D概率指纹",
+      "rows": 1487,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "8e5e7d0e496226fc2d25ec97290bc85b3906dddc024dd21ea74efff158356b95"
+    },
+    {
+      "file": "tables/sheet-16.csv",
+      "title": "对象C及D计费用量",
+      "rows": 59,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "32717dd367412c960acb5bf54ab22f9af99e3601cdd878201b43ad8dfb8f47b4"
+    },
+    {
+      "file": "tables/sheet-17.csv",
+      "title": "对象E行为指纹",
+      "rows": 22,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "19cff6f3eee6a950633be653c59d420cfdf72e6669b6465bb06386fe4d32f77d"
+    },
+    {
+      "file": "tables/sheet-18.csv",
+      "title": "对象C及D异常记录",
+      "rows": 181,
+      "columns": 34,
+      "csv_first_column": "source_row",
+      "sha256": "6762e77b381b25097cde68ba8a777a274a5896c8bc392d3c81f7a59e36937c7b"
+    },
+    {
+      "file": "tables/sheet-19.csv",
+      "title": "对象E概率指纹",
+      "rows": 744,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "ade931329f8928f01ffdd1ef48371bbbb4470765b2037abd86d3e62e78e225b0"
+    },
+    {
+      "file": "tables/sheet-20.csv",
+      "title": "对象E计费用量",
+      "rows": 30,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "e03d862e5123d1a3e4465ccb86217b697b8336355bcc7cca12ba597b14b0383a"
+    },
+    {
+      "file": "tables/sheet-21.csv",
+      "title": "对象E验收总览",
+      "rows": 35,
+      "columns": 11,
+      "csv_first_column": "source_row",
+      "sha256": "c7dd34cf7a758c5a81770129a7964757f47f387272043925969fac19f0074f68"
+    },
+    {
+      "file": "tables/sheet-22.csv",
+      "title": "最终复核",
+      "rows": 19,
+      "columns": 11,
+      "csv_first_column": "source_row",
+      "sha256": "43e2aeda00ae153017843b7e24d0f686177cbce0d0b710590b075fdbac1d84a3"
+    },
+    {
+      "file": "tables/sheet-23.csv",
+      "title": "LLMmap身份指纹",
+      "rows": 6,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "1cdc340bbacb36387e76bba30abf50564845042ee3c4dc1e0f0186beb0d1311c"
+    },
+    {
+      "file": "tables/sheet-24.csv",
+      "title": "LLMmap调用指标",
+      "rows": 41,
+      "columns": 22,
+      "csv_first_column": "source_row",
+      "sha256": "3632d2686423ef9d6029f859de1f97b3b104dabf0f512ec77cca83369f614e3d"
+    },
+    {
+      "file": "tables/sheet-25.csv",
+      "title": "对象F行为指纹",
+      "rows": 22,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "a1138f650def1a3e78c921dfaedbb8bbfc3fc0c4ecac4d7ba51b73bfe4de0cf8"
+    },
+    {
+      "file": "tables/sheet-26.csv",
+      "title": "对象F概率指纹",
+      "rows": 744,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "acb0c23b6d04ce6f212ebb0226b7d4eb4f4c6fa2c514d8829c19136c6c324b63"
+    },
+    {
+      "file": "tables/sheet-27.csv",
+      "title": "对象F计费用量",
+      "rows": 30,
+      "columns": 18,
+      "csv_first_column": "source_row",
+      "sha256": "85c72fe7296013825d858dbd51d31b7ad4a6d7aea7aa2ff5ebecc64ab36f8f25"
+    },
+    {
+      "file": "tables/sheet-28.csv",
+      "title": "对象F总览",
+      "rows": 18,
+      "columns": 3,
+      "csv_first_column": "source_row",
+      "sha256": "670ed543afcebc1cc21feab1ea25bc2b7f572fef713041c985dc2b45026d8c6c"
+    }
+  ]
+}
