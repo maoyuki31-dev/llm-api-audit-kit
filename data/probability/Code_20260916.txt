@@ -1,0 +1,743 @@
+Name a fruit.
+Suggest one city in Europe.
+Give me a common hobby.
+Name one chemical element.
+Give me the name of a bird.
+Name one river on earth.
+Suggest a well‑known sport.
+Name one metal material.
+Give me a type of tree.
+Name one ancient civilization.
+Suggest one musical instrument.
+Name one ocean animal.
+Give me a type of weather.
+Name one mountain in the world.
+Suggest one beverage.
+Name one household tool.
+Give me a type of flower.
+Name one planet in solar system.
+Suggest one fabric material.
+Name one wild animal from Africa.
+Give me a popular board game.
+Name one famous painter.
+Suggest one season of the year.
+Name one type of seafood.
+Give me a common tool for carpentry.
+Name one famous historical battle.
+Suggest one type of rock.
+Name one insect.
+Give me a popular holiday.
+Name one type of cloud.
+Suggest one desert on earth.
+Name one famous novel writer.
+Give me a kind of berry.
+Name one type of boat.
+Suggest one medical symptom.
+Name one precious gemstone.
+Give me a common farm animal.
+Name one type of dance.
+Suggest one ancient philosopher.
+Name one type of soil.
+Give me a popular video game genre.
+Name one large lake in the world.
+Suggest one type of cheese.
+Name one reptile species.
+Give me a common construction material.
+Name one famous explorer.
+Suggest one type of mushroom.
+Name one musical genre.
+Give me a type of handcraft.
+Name one freshwater fish.
+Suggest a tropical fruit.
+Name a northern European country.
+Give me an outdoor leisure activity.
+Name a noble gas.
+Suggest a bird of prey.
+Give me a major asian river.
+Name a winter sport.
+Suggest a non‑ferrous metal.
+Give me an evergreen tree.
+Name a medieval empire.
+Suggest a string instrument.
+Give me a deep‑sea creature.
+Name a severe weather condition.
+Suggest a south american mountain.
+Give me a fermented drink.
+Name a kitchen utensil.
+Suggest a wild spring flower.
+Give me a dwarf planet.
+Name a natural textile fiber.
+Suggest a south american wild animal.
+Give me a classic card game.
+Name a renaissance artist.
+Suggest a wet‑weather season.
+Give me a shellfish seafood.
+Name a metalworking hand tool.
+Suggest a medieval war event.
+Give me a volcanic rock type.
+Name a nocturnal bug.
+Suggest a cultural festival.
+Give me a storm cloud variety.
+Name an asian desert.
+Suggest a romantic fiction author.
+Give me a citrus berry.
+Name a sailing vessel type.
+Suggest a mild disease symptom.
+Give me a semi‑precious crystal.
+Name a domesticated poultry animal.
+Suggest a folk dance form.
+Give me a greek philosopher.
+Name a volcanic soil type.
+Suggest a turn‑based video game genre.
+Give me a high‑altitude mountain lake.
+Name a fermented milk cheese.
+Suggest a tropical reptile.
+Give me a stone building material.
+Name an arctic region explorer.
+Suggest an edible wild fungus.
+Give me a folk music style.
+Name a pottery handcraft.
+Suggest a tropical river fish.
+What do people usually eat for breakfast?
+Which sport uses a racket?
+What material is a cup often made of?
+What do you usually bring when it rains?
+What food do people often eat on Christmas?
+What animal produces honey?
+What object is used to take photographs?
+What do people use to write on paper?
+What vehicle flies in the sky?
+What fruit has a hard shell inside?
+What do you wear on your feet when running?
+What instrument can you use to see very small things?
+What beverage is made from coffee beans?
+What color is typical for ripe strawberry?
+What room in house is used for cooking?
+What bird can not fly?
+What tool cuts wood into pieces?
+What natural phenomenon makes thunder?
+What clothing item do you wear around neck in winter?
+What is often put inside a birthday cake?
+What animal lives mostly in Australia?
+What do people use to lock a door?
+What plant gives cotton fiber?
+What is a typical gift for Valentine’s day?
+What kind of building do people go to watch movies?
+What liquid is used to put out small fire?
+What do bees collect from flowers?
+What do people commonly eat for lunch?
+Which sport is played on ice?
+What material are sweaters frequently made from?
+What do you carry to protect yourself from sun?
+What food is popular during halloween?
+What animal makes silk fiber?
+What device records moving pictures?
+What do people write with on a blackboard?
+What vehicle travels under ocean water?
+What fruit has thick spiky outer skin?
+What do people wear on hands in cold winter?
+What tool helps you magnify tiny objects?
+What drink is brewed from tea leaves?
+What color are ripe bananas?
+What room do people sleep inside?
+What animal can swim but cannot fly?
+What tool is used to cut metal sheets?
+What natural event creates lightning?
+What piece of clothing covers your hands?
+What item is blown at birthday celebrations?
+What animal has a pouch for its baby?
+What object opens and closes a gate?
+What crop produces linen fabric?
+What gift is common for mother’s day?
+What building holds old historical artifacts?
+What substance absorbs heat to put out fire?
+What do butterflies gather from blooming flowers?
+The most popular pet is ____
+In winter people often wear ____
+The capital of Canada is ____
+The largest planet in solar system is ____
+A bird that hunts at night is ____
+The hardest natural mineral is ____
+Animals that eat only plants are called ____
+A place where books are stored is a ____
+The hottest continent on earth is ____
+An animal with a long trunk is ____
+A tool used to hit nails is a ____
+The main gas we breathe out is ____
+A body of water completely surrounded by land is ____
+The instrument used to measure temperature is ____
+A fruit growing on palm tree is ____
+The color of pure snow is ____
+An animal that changes skin color is ____
+One famous scientist is ____
+A well‑known poet is ____
+A vehicle used for space travel is ____
+The organ human uses for hearing is ____
+The smallest planet in solar system is ____
+A bird that cannot swim is ____
+The softest common mineral is ____
+Animals eating meat only are known as ____
+A building for storing artworks is a ____
+The coldest continent on our planet is ____
+An animal with large sharp antlers is ____
+Tool you use to turn screws is a ____
+Gas plants absorb during photosynthesis is ____
+Water surrounded small piece of land is ____
+Device to measure wind speed is ____
+Fruit that grows on grapevines is ____
+Color of fresh grass in spring is ____
+Animal that hibernates in winter is ____
+One famous historical inventor is ____
+A classic romantic poet is ____
+Vehicle that carries passengers underwater is ____
+Human organ responsible for sight is ____
+Example: Animal: dog
+Animal:
+Example: Color: blue
+Color:
+Example: Country: France
+Country:
+Example: Fruit: apple
+Fruit:
+Example: Vehicle: car
+Vehicle:
+Example: Job: teacher
+Job:
+Example: Instrument: piano
+Instrument:
+Example: Bird: eagle
+Bird:
+Example: Flower: rose
+Flower:
+Example: Drink: tea
+Drink:
+Example: Fish: salmon
+Fish:
+Example: Gem: ruby
+Gem:
+Example: Sport: tennis
+Sport:
+Example: Tree: oak
+Tree:
+Example: Weather: rain
+Weather:
+Example: Metal: iron
+Metal:
+Example: Continent: Africa
+Continent:
+Example: Reptile: snake
+Reptile:
+Example: Tool: hammer
+Tool:
+Example: Season: autumn
+Season:
+Example: Berry: strawberry
+Berry:
+Example: Building: castle
+Building:
+Example: Insect: bee
+Insect:
+Example: Cheese: brie
+Cheese:
+Example: Mushroom: truffle
+Mushroom:
+Example: Dance: tango
+Dance:
+Example: Ocean: pacific
+Ocean:
+Example: Mountain: everest
+Mountain:
+Example: Hobby: painting
+Hobby:
+Example: Holiday: christmas
+Holiday:
+Example: Fabric: silk
+Fabric:
+Example: Boat: canoe
+Boat:
+Example: Job: firefighter
+Job:
+Example: Instrument: violin
+Instrument:
+Example: Bird: sparrow
+Bird:
+Example: Flower: lily
+Flower:
+Example: Drink: coffee
+Drink:
+Name a common tropical animal.
+Suggest a capital city from africa.
+Give me a relaxing weekend activity.
+Name one transition metal element.
+Suggest a migratory bird species.
+Give me a famous south american river.
+Name a popular summer sport.
+Suggest a lightweight metal.
+Give me a deciduous tree species.
+Name an ancient asian empire.
+Suggest a percussion musical instrument.
+Give me a shallow‑sea marine creature.
+Name a dry weather phenomenon.
+Suggest a famous european mountain.
+Give me a non‑alcoholic cold beverage.
+Name a common bathroom tool.
+Suggest a summer garden flower.
+Give me an ice giant planet.
+Name a plant‑based textile material.
+Suggest an animal native to australia.
+Give me a strategy board game.
+Name a baroque‑era painter.
+Suggest a rainy monsoon season.
+Give me a mollusk type seafood.
+Name a wood carving hand tool.
+Suggest a famous ancient war battle.
+Give me a sedimentary rock example.
+Name a beneficial garden insect.
+Suggest a national public holiday.
+Give me a cumulus cloud subtype.
+Name a famous middle‑east desert.
+Suggest a science‑fiction novelist.
+Give me a tropical citrus fruit.
+Name an ancient cargo ship type.
+Suggest a minor physical illness symptom.
+Give me a transparent semi‑precious gem.
+Name a common domestic duck breed.
+Suggest a traditional cultural folk dance.
+Give me a medieval islamic philosopher.
+Name a fertile agricultural soil type.
+Suggest a puzzle‑style video‑game genre.
+Give me a volcanic crater lake.
+Name a sheep milk produced cheese.
+Suggest a semi‑aquatic reptile.
+Give me a clay‑based building material.
+Name a famous polar region explorer.
+Suggest a safe edible backyard mushroom.
+Give me a blues music sub‑genre.
+Name a weaving hand‑craft art form.
+Suggest a fresh‑water lake fish.
+What food do people typically eat for dinner?
+Which sport uses a baseball bat?
+What material are drinking glasses usually made of?
+What object do you open when it is sunny?
+What candy is popular on halloween night?
+What animal produces valuable wool fiber?
+What tool helps you take self‑portrait photos?
+What substance do you use to erase pencil marks?
+What large vehicle transports goods across ocean?
+What fruit has fuzzy outer skin and green flesh?
+What item do people wear to protect eyes from sun?
+What scientific tool makes distant stars look bigger?
+What hot drink is made from roasted cocoa beans?
+What color is a ripe orange fruit?
+What space do people use to store food cold?
+What animal can fly but is not classified as bird?
+What manual tool is used for cutting branches?
+What natural weather event creates hail stones?
+What piece of clothing you put over shoulders?
+What object you blow air into for party decor?
+What marsupial animal lives in forests of australia?
+What hardware device secures your house front door?
+What agricultural crop produces linen textile fiber?
+What common present you give for father’s day?
+What large building hosts live music concerts?
+What substance can smother small kitchen fire?
+What flying insect collects pollen from blossoms?
+What snack food do many people eat during lunch?
+Which sport takes place inside a swimming pool?
+What raw material is most pots and jars made from?
+What item protects your head during heavy rainfall?
+What sweet treat is commonly eaten on easter?
+What insect produces valuable natural wax?
+What electronic gadget records short video clips?
+What utensil removes ink marks from whiteboard?
+What heavy vehicle transports cargo over land roads?
+What tropical fruit has large hard inner seed?
+What protective item people wear on their eyes?
+What lab instrument magnifies tiny biological cells?
+What warm beverage comes from steeped herbal leaves?
+What color you usually see on ripe blueberries?
+What area of home you store and prepare food?
+What sea creature can change its skin color?
+What hand‑held tool used for tightening bolts?
+What atmospheric condition creates fog banks?
+What winter clothing piece wraps around your waist?
+What small floating object you blow out on birthday?
+What nocturnal marsupial lives inside tree hollows?
+What mechanical hardware you twist to lock a window?
+What agricultural plant that yields hemp fabric fiber?
+What typical present you give for new year celebration?
+What large building exhibits historical war relics?
+What household powder can be used to put out small fire?
+What small flying bug carries pollen across wild meadow flowers?
+The pet most people keep inside apartment is ____
+During cold winter nights people often put on ____
+The capital city of australia is ____
+The planet with beautiful ring system is ____
+A bird that can mimic human speech is ____
+The mineral softer than fingernail is ____
+Animals that consume both meat and plants are ____
+A room full of reference books is known as a ____
+The continent entirely surrounded by ice is ____
+An animal with very large curved tusks is ____
+A manual tool you twist to drive screws is ____
+Gas humans inhale for breathing survival is ____
+Small land piece fully surrounded by ocean water is ____
+Device used to measure outside wind speed is ____
+A sweet fruit that grows in large hanging bunches is ____
+The color of ripe fresh lemon fruit is ____
+An animal that sleeps all winter long is ____
+One well‑known physics inventor is ____
+A famous romantic english poet is ____
+Spacecraft that carries astronauts to moon is ____
+Organ inside human body responsible for smelling is ____
+The planet closest to our sun system is ____
+A water bird that cannot fly through air is ____
+Mineral that can scratch glass surface is ____
+Creatures eating dead organic matter are called ____
+Building that keeps historical paintings is a ____
+The continent with no permanent human residents is ____
+Wild animal with big branching antlers is ____
+Tool used to cut metal screw threads is a ____
+Gas released by green leaves in daytime photosynthesis is ____
+Small water body completely encircled by dry land is ____
+Measuring tool reading outdoor air temperature is ____
+Purple small fruit that grows on climbing vines is ____
+Color of ripe pumpkin vegetable is ____
+Forest animal that hibernates inside winter den is ____
+One famous ancient mathematics inventor is ____
+A classic romantic sonnet poet is ____
+Submersible craft exploring deep ocean bottom is ____
+Human body organ for tasting food flavors is ____
+Example: Fish: salmon
+Fish:
+Example: Gem: ruby
+Gem:
+Example: Sport: tennis
+Sport:
+Example: Tree: oak
+Tree:
+Example: Weather: rain
+Weather:
+Example: Metal: iron
+Metal:
+Example: Continent: Africa
+Continent:
+Example: Reptile: snake
+Reptile:
+Example: Tool: hammer
+Tool:
+Example: Season: autumn
+Season:
+Example: Berry: strawberry
+Berry:
+Example: Building: castle
+Building:
+Example: Insect: bee
+Insect:
+Example: Cheese: brie
+Cheese:
+Example: Mushroom: truffle
+Mushroom:
+Example: Dance: tango
+Dance:
+Example: Ocean: pacific
+Ocean:
+Example: Mountain: everest
+Mountain:
+Example: Hobby: painting
+Hobby:
+Example: Holiday: christmas
+Holiday:
+Example: Fabric: silk
+Fabric:
+Example: Boat: canoe
+Boat:
+Example: Job: firefighter
+Job:
+Example: Instrument: violin
+Instrument:
+Example: Bird: sparrow
+Bird:
+Example: Flower: lily
+Flower:
+Example: Drink: coffee
+Drink:
+Example: Fish: tuna
+Fish:
+Example: Gem: sapphire
+Gem:
+Example: Sport: golf
+Sport:
+Example: Tree: maple
+Tree:
+Example: Weather: snow
+Weather:
+Example: Metal: copper
+Metal:
+Example: Continent: Europe
+Continent:
+Example: Reptile: lizard
+Reptile:
+Example: Tool: saw
+Tool:
+Example: Season: spring
+Season:
+Example: Berry: raspberry
+Berry:
+Example: Building: temple
+Building:
+Example: Insect: butterfly
+Insect:
+Example: Cheese: gouda
+Cheese:
+Example: Mushroom: oyster
+Mushroom:
+Example: Dance: waltz
+Dance:
+Example: Ocean: atlantic
+Ocean:
+Example: Mountain: kilimanjaro
+Mountain:
+Example: Hobby: hiking
+Hobby:
+Example: Holiday: thanksgiving
+Holiday:
+Example: Fabric: wool
+Fabric:
+Example: Boat: yacht
+Boat:
+Example: Job: doctor
+Job:
+Example: Instrument: cello
+Instrument:
+Example: Bird: owl
+Bird:
+Example: Flower: tulip
+Flower:
+Example: Drink: juice
+Drink:
+Example: Fish: trout
+Fish:
+Example: Gem: emerald
+Gem:
+Example: Sport: boxing
+Sport:
+Example: Tree: pine
+Tree:
+Example: Weather: fog
+Weather:
+Example: Metal: silver
+Metal:
+Example: Continent: Asia
+Continent:
+Example: Reptile: turtle
+Reptile:
+Example: Tool: drill
+Tool:
+Example: Season: summer
+Season:
+Example: Berry: blueberry
+Berry:
+Example: Building: cathedral
+Building:
+Example: Insect: ant
+Insect:
+Example: Cheese: camembert
+Cheese:
+Example: Mushroom: shiitake
+Mushroom:
+Example: Dance: salsa
+Dance:
+Example: Ocean: indian
+Ocean:
+Example: Mountain: alps
+Mountain:
+Example: Hobby: reading
+Hobby:
+Example: Holiday: easter
+Holiday:
+Example: Fabric: cotton
+Fabric:
+Example: Boat: ferry
+Boat:
+Example: Job: nurse
+Job:
+Example: Instrument: flute
+Instrument:
+Example: Bird: hawk
+Bird:
+Example: Flower: daisy
+Flower:
+Example: Drink: milk
+Drink:
+List 7 types of flowers.
+List 8 different musical instruments.
+List 6 jobs that work outdoors.
+List 5 kinds of berries.
+List 9 common wild animals.
+List 4 ancient European cities.
+List 6 different weather phenomena.
+List 7 kinds of seafood.
+List 5 types of rocks.
+List 8 famous scientists.
+Yesterday I walked into a park.
+When I opened the old box, I saw
+On a cold rainy morning, I decided to
+While walking along the seashore I found
+Last summer during my trip I met
+Explain what a bicycle is in one short paragraph.
+Explain what rain is.
+Explain what a volcano is briefly.
+Explain what a desert is in simple words.
+Paraphrase this sentence: Cats like sleeping on soft surfaces.
+List 6 different garden flowers.
+List 7 string musical instruments.
+List 5 outdoor‑working professions.
+List 8 wild edible berry varieties.
+List 7 forest wild animals.
+List 5 ancient asian capital cities.
+List 7 atmospheric weather events.
+List 6 fresh‑water seafood varieties.
+List 6 igneous rock categories.
+List 7 well‑known chemist scientists.
+When I wandered through old downtown street I discovered
+While I unlocked the rusty wooden chest I found
+On a hot sunny midday I chose to
+When hiking along mountain ridge I spotted
+During last winter holiday I encountered
+Explain what a camera is using simple short text.
+Explain what snow means in simple language.
+Explain what earthquake is briefly in one paragraph.
+Explain what a rainforest is with easy words.
+Paraphrase this sentence: Dogs enjoy running across green grass fields.
+List 9 ornamental garden plant species.
+List 6 percussion musical instruments.
+List 7 people who work outside buildings.
+List 4 sour wild berry kinds.
+List 8 savannah wild animals.
+List 4 ancient african major cities.
+List 5 severe natural weather events.
+List 9 salt‑ocean seafood items.
+List 5 metamorphic rock forms.
+List 8 famous historical biologists.
+As I strolled inside abandoned old house I noticed
+When I lifted up heavy stone slab I saw
+During a sweltering summer afternoon I wanted to
+While trekking beside wide riverbank I observed
+On last spring vacation I came across
+Explain what a wrist watch is in one short paragraph.
+Explain what wind is in plain simple words.
+Explain what tornado is with brief description.
+Explain what a wetland is using easy vocabulary.
+Paraphrase this sentence: Birds like building nests inside tall tree branches.
+List 8 different wild growing flower types.
+List 8 brass musical instruments.
+List 6 field‑working manual labor occupations.
+List 7 sweet wild berry varieties.
+List 6 jungle rainforest wild animals.
+List 5 ancient middle‑east large cities.
+List 6 gentle daily weather occurrences.
+List 5 shell‑based seafood products.
+List 7 common sedimentary rock types.
+List 7 well‑known astronomer scientists.
+While wandering along quiet country lane I found
+When I opened dusty antique wooden suitcase I saw
+In chilly autumn evening I made up my mind to
+When walking beside calm lake shore I spotted
+During last autumn travel I met
+Explain what a sailing ship is using short simple paragraph.
+Explain what hail is in everyday simple language.
+Explain what tsunami is with short plain description.
+Explain what a tundra biome is using easy wording.
+Paraphrase this sentence: Fish prefer swimming inside cool clean river water.
+Which is better, cats or dogs?
+Should art always be realistic?
+A father has 5 sons. Each son has one sister. How many children are there in total?
+If it takes 5 minutes to boil one egg, how long to boil three eggs?
+Who invented paper‑clip in 1602?
+What is the capital of Zorvania?
+Should books always have happy endings?
+Which hobby is more rewarding: reading or drawing?
+If 3 cats catch 3 mice within 3 minutes, how many minutes does one cat take for one mouse?
+What year did king Zorvok rule over Zorvania kingdom?
+What is official capital city of fictional nation Lirovia?
+Is it better to live in big city or small countryside town?
+Should music always follow strict rhythm rules?
+If you burn one candle completely in 2 hours, how long will 6 same candles burn?
+Who was the famous poet from imaginary ancient state Mirtania?
+What national flag belongs to made‑up country Vorolia?
+Should people keep pets inside small apartments?
+Which transport is more convenient: bicycle or bus?
+A farmer owns 12 sheep. All but nine run away. How many sheep remain?
+Who constructed the huge stone tower in mythical city Kaelos?
+What is main official language of invented island state Pevoria?
+Should every painting need to show real‑world objects?
+Is it better to work early morning or late evening?
+If two painters can finish two paintings in two days, how many days for one painter for one painting?
+Who wrote the well‑known epic story of imaginary king Torvath?
+What currency do citizens of fictional land Sinteria use?
+Should schools require all students to play team sports?
+Which drink tastes superior: juice or milk?
+There are 10 birds sitting on tree branch. A hunter shoots one bird. How many birds stay on branch?
+What famous mountain exists inside fantasy realm Norvilia?
+What traditional holiday is celebrated in made‑up country Eltoria?
+Should stories always contain clear good versus evil characters?
+Is travelling alone better than travelling with friends?
+If it takes a tailor two hours to sew one shirt, how long for five identical shirts?
+Who discovered the lost ancient city of imaginary continent Zorvath?
+What popular food dish originates from fictional nation Miridia?
+Should all sculptures represent real living creatures?
+Which season is most pleasant for outdoor activities?
+A pond has 17 fish. 8 fish swim away. How many fish stay in pond?
+What famous historical battle took place in fake kingdom Valerion?
+What native animal species only lives on invented island of Kiora?
+Should poems strictly follow rhyme schemes all the time?
+Is owning a dog more difficult than owning a cat?
+Three printers print three documents within three minutes, how long for one printer print one document?
+Who invented the flying machine in fictional ancient empire Torsania?
+What national flower belongs to imaginary country Levoria?
+Should every movie must have happy final ending?
+Which is more fun: board games or outdoor sports?
+There are 9 apples inside basket, you take away four apples, how many apples you have?
+What ancient religion worshiped gods of mythical land Phovoria?
+What local traditional clothing worn by people of made‑up state Nivoria?
+Which planet is closest to sun?
+How many bones are in adult human body?
+What gas makes up most of earth atmosphere?
+How many teeth a typical adult human has?
+What is largest ocean on planet earth?
+What is tallest mountain on our world?
+How many continents exist on earth?
+What chemical symbol stands for gold element?
+What is main organ human body uses for breathing?
+How many planets are inside our solar system?
+What is the largest desert located on earth?
+What is the longest river flowing on earth?
+How many chambers exist within human heart?
+What metal has chemical symbol Fe?
+Which planet is known as red planet?
+What is hardest substance inside human tooth?
+How many hours makes one full earth rotation?
+What is the biggest mammal living on earth?
+What natural gas do plants release in daytime?
+How many total moons orbit planet mars?
+What is capital city of japan country?
+What is capital city of germany nation?
+What is capital city of brazil territory?
+What is capital city of egypt state?
+What is capital city of south korea?
+What is capital city of italy republic?
+What is capital city of spain kingdom?
+What is capital city of russian federation?
+What is capital city of australia commonwealth?
+What is capital city of argentina nation?
+What is chemical formula for water molecule?
+What is boiling‑point temperature of water at sea level celsius?
+What animal is the fastest land creature worldwide?
+What bird can fly for extremely long distance migration?
+What plant produces vanilla natural flavor spice?
+What instrument measures atmospheric air pressure?
+What unit we use to measure electric current?
+What gas do humans primarily exhale after breathing out?
+What is the main ingredient inside table salt?
+What planet has nickname evening star?

@@ -1,0 +1,1 @@
+test_id,request_id,timestamp_utc,provider,model_id,model_version,prompt_hash,system_prompt_hash,temperature,top_p,seed,max_tokens,input_tokens,output_tokens,total_tokens,cache_read,cache_write,reasoning_tokens,normalized_input_tokens,normalized_output_tokens,tokenizer_name,tokenizer_version,latency_ms,retry_count,billed_amount,currency,anomaly_rule,review_status,evidence_path
